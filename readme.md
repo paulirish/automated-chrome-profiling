@@ -5,15 +5,15 @@ We want to use the [Chrome debugging protocol](https://developer.chrome.com/devt
 But we'll use [chrome-remote-interface](https://github.com/cyrus-and/chrome-remote-interface) as a nice client in front of it:
 
     npm install chrome-remote-interface
-    
+
 Run Chrome with an open debugging port:
 
     # linux
     google-chrome --remote-debugging-port=9222
-   
+
     # mac
     /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222
-   
+
 
 ## Let's profile!
 
@@ -30,6 +30,7 @@ We're about to…
 ```js
 var fs = require('fs');
 var Chrome = require('chrome-remote-interface');
+
 Chrome(function (chrome) {
     with (chrome) {
         Page.enable();
@@ -77,4 +78,4 @@ Testing the performance of asynchronous code is difficult. Obviously measuring e
 
 ### Contributors
 * paul irish
-* [@vladikoff](http://github.com/vladikoff) 
+* [@vladikoff](http://github.com/vladikoff)
