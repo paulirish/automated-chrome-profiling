@@ -62,6 +62,20 @@ Chrome(function (chrome) {
     console.error('Cannot connect to Chrome');
 });
 ```
+
+For asynchronous tests, the code would be:
+
+```js
+Runtime.evaluate({ "expression": "console.profile(); startTest(function() { console.profileEnd(); });" });
+
+// ...
+
+function startTest(cb) {
+    foo.on('end', cb);
+    foo.startAsync();
+}
+```
+
 #### Enjoy!
 
  Please file issues or PR any updates as you try things.
