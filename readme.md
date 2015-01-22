@@ -23,8 +23,12 @@ We're about to…
 * Start profiling
 * run `startTest();`
 * Stop profiling and retrieve the profiling result
+* Load the data into Chrome DevTools
+![](http://i.imgur.com/zAZa3iU.jpg)
 
+#### Code
 ```js
+var fs = require('fs');
 var Chrome = require('chrome-remote-interface');
 Chrome(function (chrome) {
     with (chrome) {
@@ -51,11 +55,16 @@ Chrome(function (chrome) {
 function saveProfile(name, CPUProfile, desc){
     // CPUProfile object described here:
     //   code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/devtools/protocol.json&q=protocol.json%20CPUProfileNode&sq=package:chromium&type=cs
-    
+
     // either:
     // 1. process the data in node or …
     // 2. save as JSON to disk, open Chrome DevTools, Profiles tab, select CPU Profile radio button, click `load`
     //    and view the profile data in the full devtools UI.
+    
+    var file = 'profile-' + Date.now() + '.cpuprofile';
+    var data = JSON.stringify(CPUProfile.profile, null, 2);
+    fs.writeFileSync(file, data);
+    console.log('Done! See ' + file);
 }
 ```
 #### Enjoy!
