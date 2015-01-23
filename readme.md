@@ -1,8 +1,8 @@
-Let's say you want to evaluate the performance of some JavaScript and want to automate it as much as possible. Let's do that!
+Let's say you want to evaluate the performance of some clientside JavaScript and want to automate it. Let's kick off our measurement in Node.js and collect the performance metrics from Chrome. Oh yeah.
 
-We want to use the [Chrome debugging protocol](https://developer.chrome.com/devtools/docs/debugger-protocol) and go directly to [how Chrome's JS sampling profiler interacts with V8](https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/devtools/protocol.json&q=protocol.json%20%22domain%22:%20%22Profiler%22&sq=package:chromium&type=cs).
+We can use the [Chrome debugging protocol](https://developer.chrome.com/devtools/docs/debugger-protocol) and go directly to [how Chrome's JS sampling profiler interacts with V8](https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/devtools/protocol.json&q=protocol.json%20%22domain%22:%20%22Profiler%22&sq=package:chromium&type=cs).
 
-But we'll use [chrome-remote-interface](https://github.com/cyrus-and/chrome-remote-interface) as a nice client in front of it:
+So much power here, so we'll use [chrome-remote-interface](https://github.com/cyrus-and/chrome-remote-interface) as a nice client in front of the protocol:
 
     npm install chrome-remote-interface
 
@@ -17,14 +17,15 @@ Run Chrome with an open debugging port:
 
 ## Let's profile!
 
-We're about to…
+Here's what we're about to…
 
-* Open http://localhost:8080/perf-test.html
+* Open `http://localhost:8080/perf-test.html`
 * Start profiling
 * run `startTest();`
 * Stop profiling and retrieve the profiling result
-* Load the data into Chrome DevTools
-![](http://i.imgur.com/zAZa3iU.jpg)
+* We can then load the data into Chrome DevTools to view
+
+<img src="http://i.imgur.com/zAZa3iU.jpg" height=150>
 
 #### Code
 ```js
