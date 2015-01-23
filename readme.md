@@ -84,13 +84,9 @@ function startTest(cb) {
 
 This is just the tip of the iceberg when it comes to using [the protocol](https://developer.chrome.com/devtools/docs/debugger-protocol) to manipulate and measure the browser. Plenty of other projects around this space as well: [Chromium Telemetry](http://www.chromium.org/developers/telemetry), [ChromeDriver frontend for WebDriver](https://sites.google.com/a/chromium.org/chromedriver/), [trace-viewer](http://dev.chromium.org/developers/how-tos/trace-event-profiling-tool), the aforementioned [chrome-remote-interface](https://github.com/cyrus-and/chrome-remote-interface) Node API, and a number of [other debugging protocol client applications collected here](https://developer.chrome.com/devtools/docs/debugging-clients).
 
-#### Enjoy!
+#### Why profile JS like this?
 
- Please file issues or PR any updates as you try things.
-
-#### Why?
-
-Testing the performance of asynchronous code is difficult. Obviously measuring endTime - startTime doesn't work. Using a profiler gives you the insight of how many microseconds the CPU spent within each script, function and its children. For async usecases, in particular, you can now evaluate differences much easier.
+Well, it started because testing the performance of asynchronous code is difficult. Obviously measuring `endTime - startTime` doesn't work. However, using a profiler gives you the insight of how many microseconds the CPU spent within each script, function and its children, making analysis much more sane.
 
 ### Contributors
 * paul irish
