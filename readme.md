@@ -82,6 +82,8 @@ function startTest(cb) {
 }
 ```
 
+#### Way more is possible
+
 This is just the tip of the iceberg when it comes to using [the protocol](https://developer.chrome.com/devtools/docs/debugger-protocol) to manipulate and measure the browser. Plenty of other projects around this space as well: [Chromium Telemetry](http://www.chromium.org/developers/telemetry), [ChromeDriver frontend for WebDriver](https://sites.google.com/a/chromium.org/chromedriver/), [trace-viewer](http://dev.chromium.org/developers/how-tos/trace-event-profiling-tool), the aforementioned [chrome-remote-interface](https://github.com/cyrus-and/chrome-remote-interface) Node API, and a number of [other debugging protocol client applications collected here](https://developer.chrome.com/devtools/docs/debugging-clients).  [browser-perf](https://github.com/axemclion/browser-perf) and its viewer [perfjankie](https://github.com/axemclion/perfjankie) are definitely worth a look as well.
 
 #### Why profile JS like this?
