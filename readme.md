@@ -69,7 +69,10 @@ Chrome(function (chrome) {
 });
 ```
 
-#### Timeline recording
+#### Timeline recording example
+
+Alternatively, you could record from the timeline. The saved files is drag/droppable into the Timeline panel.
+
 ```js
 var TRACE_CATEGORIES = ["-*", "devtools.timeline", "disabled-by-default-devtools.timeline", "disabled-by-default-devtools.timeline.frame", "toplevel", "blink.console", "disabled-by-default-devtools.timeline.stack", "disabled-by-default-devtools.screenshot", "disabled-by-default-v8.cpu_profile.hires"];
 var rawEvents = [];
