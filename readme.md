@@ -74,7 +74,7 @@ Chrome(function (chrome) {
 Alternatively, you could record from the timeline. The saved files is drag/droppable into the Timeline panel.
 
 ```js
-var TRACE_CATEGORIES = ["-*", "devtools.timeline", "disabled-by-default-devtools.timeline", "disabled-by-default-devtools.timeline.frame", "toplevel", "blink.console", "disabled-by-default-devtools.timeline.stack", "disabled-by-default-devtools.screenshot", "disabled-by-default-v8.cpu_profile.hires"];
+var TRACE_CATEGORIES = ["-*", "devtools.timeline", "disabled-by-default-devtools.timeline", "disabled-by-default-devtools.timeline.frame", "toplevel", "blink.console", "disabled-by-default-devtools.timeline.stack", "disabled-by-default-devtools.screenshot", "disabled-by-default-v8.cpu_profile"];
 var rawEvents = [];
 
 Chrome(function (chrome) {
@@ -82,7 +82,7 @@ Chrome(function (chrome) {
         Page.enable();
         Tracing.start({
             "categories":   TRACE_CATEGORIES.join(','),
-            "options":      "sampling-frequency=100"
+            "options":      "sampling-frequency=10000"  // 1000 is default and too slow.
         });
 
         Page.navigate({'url': 'http://paulirish.com'})
@@ -94,6 +94,7 @@ Chrome(function (chrome) {
             var file = 'profile-' + Date.now() + '.devtools.trace';
             fs.writeFileSync(file, JSON.stringify(rawEvents, null, 2));
             console.log('Trace file: ' + file);
+            console.log('You can open the trace file in DevTools Timeline panel. (Turn on experiment: Timeline tracing based JS profiler)\n')
 
             chrome.close();
         });
@@ -107,20 +108,10 @@ Chrome(function (chrome) {
 }).on('error', function (e) {
     console.error('Cannot connect to Chrome', e);
 });
+
 ```
 
-For asynchronous tests, the code would be:
 
-```js
-Runtime.evaluate({ "expression": "console.profile(); startTest(function() { console.profileEnd(); });" });
-
-// ...
-
-function startTest(cb) {
-    foo.on('end', cb);
-    foo.startAsync();
-}
-```
 
 #### Way more is possible
 
