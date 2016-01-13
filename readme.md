@@ -52,11 +52,9 @@ Chrome(function (chrome) {
             // CPUProfile object (params.profile) described here:
             //    https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/devtools/protocol.json&q=protocol.json%20%22CPUProfile%22,&sq=package:chromium
 
-            // Either:
-            // 1. process the data however you wish… or,
-            // 2. Use the JSON file, open Chrome DevTools, Profiles tab,
-            //    select CPU Profile radio button, click `load` and view the
-            //    profile data in the full devtools UI.
+            // Either:  1. process the data however you wish… or,
+            //          2. Use the JSON file, open Chrome DevTools, Profiles tab, select CPU Profile radio button,
+            //             click `load` and view the profile data in the full devtools UI.
             var file = 'profile-' + Date.now() + '.cpuprofile';
             var data = JSON.stringify(params.profile, null, 2);
             fs.writeFileSync(file, data);
@@ -64,9 +62,7 @@ Chrome(function (chrome) {
             close();
         });
     }
-}).on('error', function () {
-    console.error('Cannot connect to Chrome');
-});
+}).on('error', e => console.error('Cannot connect to Chrome', e));
 ```
 
 #### Timeline recording example
@@ -74,11 +70,11 @@ Chrome(function (chrome) {
 Alternatively, you could record from the timeline. The saved files is drag/droppable into the Timeline panel.
 
 ```js
-var TRACE_CATEGORIES = ["-*", "devtools.timeline", "disabled-by-default-devtools.timeline", "disabled-by-default-devtools.timeline.frame", "toplevel", "blink.console", "disabled-by-default-devtools.timeline.stack", "disabled-by-default-devtools.screenshot", "disabled-by-default-v8.cpu_profile"];
-var rawEvents = [];
-
 Chrome(function (chrome) {
     with (chrome) {
+        var TRACE_CATEGORIES = ["-*", "devtools.timeline", "disabled-by-default-devtools.timeline", "disabled-by-default-devtools.timeline.frame", "toplevel", "blink.console", "disabled-by-default-devtools.timeline.stack", "disabled-by-default-devtools.screenshot", "disabled-by-default-v8.cpu_profile"];
+        var rawEvents = [];
+
         Page.enable();
         Tracing.start({
             "categories":   TRACE_CATEGORIES.join(','),
@@ -90,6 +86,8 @@ Chrome(function (chrome) {
            Tracing.end()
         });
 
+        Tracing.dataCollected( data => { rawEvents = rawEvents.concat(data.value); });
+
         Tracing.tracingComplete(function () {
             var file = 'profile-' + Date.now() + '.devtools.trace';
             fs.writeFileSync(file, JSON.stringify(rawEvents, null, 2));
@@ -98,76 +96,48 @@ Chrome(function (chrome) {
 
             chrome.close();
         });
-
-        Tracing.dataCollected(function(data){
-            var events = data.value;
-            rawEvents = rawEvents.concat(events);
-        });
-
     }
-}).on('error', function (e) {
-    console.error('Cannot connect to Chrome', e);
-});
-
+}).on('error', e => console.error('Cannot connect to Chrome', e));
 ```
 
 ### Finding forced layouts (reflows)
 
 ```js
-var fs = require('fs');
-var Chrome = require('chrome-remote-interface');
-var util = require('util');
-
-var TRACE_CATEGORIES = ["-*", "devtools.timeline", "disabled-by-default-devtools.timeline", "disabled-by-default-devtools.timeline.stack", "disabled-by-default-v8.cpu_profile"];
-var rawEvents = [];
-
 Chrome(function (chrome) {
     with (chrome) {
-        Page.enable();
-        Tracing.start({
-            "categories":   TRACE_CATEGORIES.join(','),
-            "options":      "sampling-frequency=10000"  // 1000 is default and too slow.
-        });
 
-        Page.navigate({'url': 'http://localhost:8000/layout-thrash.html'})
-        Page.loadEventFired(function () {
-           setTimeout(function(){
-                Tracing.end()
-            }, 300);
-        });
+        var url = 'http://paulirish.com';
+        var rawEvents = [];
+        var trace_categories = ['-*', 'devtools.timeline', 'disabled-by-default-devtools.timeline', 'disabled-by-default-devtools.timeline.stack'];
+
+        Page.enable();
+        Tracing.start({ categories: trace_categories.join(',') });
+
+        Page.navigate({ url: url })
+
+        Page.loadEventFired( _ =>  Tracing.end() );
+
+        Tracing.dataCollected( data => { rawEvents = rawEvents.concat(data.value); });
 
         Tracing.tracingComplete(function () {
-
             // find forced layouts
             // https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/devtools/front_end/timeline/TimelineModel.js&sq=package:chromium&type=cs&q=f:timelinemodel%20forced
-
             var forcedReflowEvents = rawEvents
-                .filter( e => e.name == "UpdateLayoutTree" || e.name == "Layout")
+                .filter( e => e.name == 'UpdateLayoutTree' || e.name == 'Layout')
                 .filter( e => e.args && e.args.beginData && e.args.beginData.stackTrace && e.args.beginData.stackTrace.length)
 
-            var file = 'forced-reflow-' + Date.now() + '.devtools.trace';
-            fs.writeFileSync(file, JSON.stringify(forcedReflowEvents, null, 2));
+            console.log('Found events:', util.inspect(forcedReflowEvents, { showHidden: false, depth: null }), '\n');
 
-            console.log('Found events:')
-            console.log(util.inspect(forcedReflowEvents,  {showHidden: false, depth: null}));
-            console.log('')
-            console.log("Results: ", forcedReflowEvents.length, " forced StyleRecalc and forced Layouts found.")
-            console.log('')
+            console.log('Results: (', forcedReflowEvents.length, ') forced style recalc and forced layouts found.\n')
+
+            var file = 'forced-reflow-' + Date.now() + '.devtools.trace';
+            fs.writeFileSync(file, JSON.stringify(rawEvents, null, 2));
             console.log('Found events written to file: ' + file);
 
             chrome.close();
         });
-
-        Tracing.dataCollected(function(data){
-            var events = data.value;
-            rawEvents = rawEvents.concat(events);
-        });
     }
-}).on('error', function (e) {
-    console.error('Cannot connect to Chrome', e);
-});
-
-
+}).on('error', e => console.error('Cannot connect to Chrome', e));
 ```
 
 
