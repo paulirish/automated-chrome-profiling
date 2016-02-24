@@ -29,15 +29,35 @@ See `get-cpu-profile.js`. Here's what it does:
 
 #### Timeline recording 
 
-Alternatively, you could record from the timeline. The saved files is drag/droppable into the Timeline panel.
-
+You can record from the timeline. The saved files is drag/droppable into the Timeline panel.
 See `get-timeline-trace.js`
 
 <img src="https://cloud.githubusercontent.com/assets/39191/12309969/774c0c1e-ba02-11e5-9a8a-b45e33ef6e5f.png">
 
 ### Finding forced layouts (reflows)
 
+A bit more specialized, you can take that timeline recording and probe it with questions like.. "How many times is layout forced"
+
 See `test-for-layout-trashing.js`
+
+### Timeline model
+
+The raw trace data is.. pretty raw.  The timeline-model package in this repo provides an ability to use the Chrome DevTools frontend's trace parsing. See `lib/timeline-model` and install via `npm install devtools-timeline-model`.
+
+```js
+const filename = 'demo/mdn-fling.json'
+
+var fs = require('fs')
+var traceToTimelineModel = require('./lib/timeline-model.js')
+
+var events = fs.readFileSync(filename, 'utf8')
+var model = traceToTimelineModel(events)
+
+model.timelineModel // full event tree
+model.irModel // interactions, input, animations
+model.frameModel // frames, durations
+```
+![image](https://cloud.githubusercontent.com/assets/39191/13276174/6e8284e8-da71-11e5-89a1-190abbac8dfd.png)
 
 
 #### Way more is possible
