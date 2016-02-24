@@ -27,7 +27,7 @@ See `get-cpu-profile.js`. Here's what it does:
 <img src="http://i.imgur.com/zAZa3iU.jpg" height=150>
 
 
-#### Timeline recording 
+#### Timeline recording
 
 You can record from the timeline. The saved files is drag/droppable into the Timeline panel.
 See `get-timeline-trace.js`
@@ -42,7 +42,7 @@ See `test-for-layout-trashing.js`
 
 ### Timeline model
 
-The raw trace data is.. pretty raw.  The timeline-model package in this repo provides an ability to use the Chrome DevTools frontend's trace parsing. See `lib/timeline-model` and install via `npm install devtools-timeline-model`.
+The raw trace data is.. pretty raw.  The [`devtools-timeline-model` package](https://github.com/paulirish/devtools-timeline-model)  provides an ability to use the Chrome DevTools frontend's trace parsing.
 
 ```js
 const filename = 'demo/mdn-fling.json'

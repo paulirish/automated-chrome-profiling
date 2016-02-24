@@ -1,7 +1,7 @@
 const filename = 'demo/mdn-fling.json'
 
 var fs = require('fs')
-var traceToTimelineModel = require('./lib/timeline-model.js')
+var traceToTimelineModel = require('devtools-timeline-model')
 
 var events = fs.readFileSync(filename, 'utf8')
 var model = traceToTimelineModel(events)

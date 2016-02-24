@@ -1,8 +1,7 @@
 {
-  "name": "devtools-timeline-model",
+  "name": "automated-chrome-profiling",
   "version": "1.0.0",
-  "description": "",
-  "main": "lib/timelinemodel.js",
+  "description": "A few scripts to get started",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,8 +9,7 @@
   "license": "Apache-2.0",
   "repository": "https://github.com/paulirish/automated-chrome-profiling",
   "dependencies": {
-    "chrome-devtools-frontend": "1.0.377119-1",
-    "node-hook": "^0.2.0",
-    "object-values": "^1.0.0"
+    "devtools-timeline-model": "^1.0",
+    "chrome-remote-interface": "^0.11.0"
   }
 }
