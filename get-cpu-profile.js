@@ -14,7 +14,7 @@ Chrome(function (chrome) {
         
         // 100 microsecond JS profiler sampling resolution, (1000 is default)
         Profiler.setSamplingInterval({ 'interval': 100 }, function () {
-            Page.navigate({'url': 'http://localhost:8000/demo/perf-test.html'});
+            Page.navigate({'url': 'http://localhost:8080/demo/perf-test.html'});
         });
 
         Profiler.consoleProfileFinished(function (params) {

@@ -1,24 +1,37 @@
 Let's say you want to evaluate the performance of some clientside JavaScript and want to automate it. Let's kick off our measurement in Node.js and collect the performance metrics from Chrome. Oh yeah.
 
-We can use the [Chrome debugging protocol](https://developer.chrome.com/devtools/docs/debugger-protocol) and go directly to [how Chrome's JS sampling profiler interacts with V8](https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/devtools/protocol.json&q=file:protocol.json%20%22Profiler%22,&sq=package:chromium&type=cs).
+We can use the [Chrome debugging protocol](https://developer.chrome.com/devtools/docs/debugger-protocol) and go directly to [how Chrome's JS sampling profiler interacts with V8](https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/devtools/protocol.json&q=file:protocol.json%20%22Profiler%22,&sq=package:chromium&type=cs). So much power here, so we'll use [chrome-remote-interface](https://github.com/cyrus-and/chrome-remote-interface) as a nice client in front of the protocol:
 
-So much power here, so we'll use [chrome-remote-interface](https://github.com/cyrus-and/chrome-remote-interface) as a nice client in front of the protocol:
 
-    npm install chrome-remote-interface
+1. Clone this repo and serve it
 
-Run Chrome with an open debugging port:
+```sh 
+git clone https://github.com/paulirish/automated-chrome-profiling
+cd automated-chrome-profiling
+python -m SimpleHTTPServer 8080  # app is hardcoded to 8080
+```
 
-    # linux
-    google-chrome --remote-debugging-port=9222
+2. Run Chrome with an open debugging port:
 
-    # mac
-    /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222
+```sh
+# linux
+google-chrome --remote-debugging-port=9222 --user-data-dir="$TMPDIR/chrome-profiling"
 
+# mac
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir="$TMPDIR/chrome-profiling"
+```
+Navigate off the start page to example.com or something. 
+
+3. Run the CPU profiling demo app
+
+```sh
+node get-cpu-profile.js
+```
 
 #### CPU Profiling
-See `get-cpu-profile.js`. Here's what it does:
+Read through [`get-cpu-profile.js`](https://github.com/paulirish/automated-chrome-profiling/blob/master/get-cpu-profile.js). Here's what it does:
 
-* Opens `http://localhost:8080/perf-test.html`
+* It navigates your open tab to `http://localhost:8080/perf-test.html`
 * Starts profiling
 * run's the page's `startTest();`
 * Stop profiling and retrieve the profiling result
@@ -26,6 +39,7 @@ See `get-cpu-profile.js`. Here's what it does:
 
 <img src="http://i.imgur.com/zAZa3iU.jpg" height=150>
 
+You can do other stuff. For example...
 
 #### Timeline recording
 
