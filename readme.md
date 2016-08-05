@@ -5,22 +5,22 @@ We can use the [Chrome debugging protocol](https://developer.chrome.com/devtools
 
 **Step 1: Clone this repo and serve it**
 
-```sh 
+```sh
 git clone https://github.com/paulirish/automated-chrome-profiling
 cd automated-chrome-profiling
-python -m SimpleHTTPServer 8080  # app is hardcoded to 8080
+npm start  # serves the folder at http://localhost:8080/ (port hardcoded)
 ```
 
 **Step 2: Run Chrome with an open debugging port:**
 
 ```sh
 # linux
-google-chrome --remote-debugging-port=9222 --user-data-dir="$TMPDIR/chrome-profiling"
+google-chrome --remote-debugging-port=9222 --user-data-dir=$TMPDIR/chrome-profiling --no-default-browser-check
 
 # mac
-/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir="$TMPDIR/chrome-profiling"
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir=$TMPDIR/chrome-profiling --no-default-browser-check
 ```
-Navigate off the start page to example.com or something. 
+Navigate off the start page to example.com or something.
 
 **Step 3: Run the CPU profiling demo app**
 
