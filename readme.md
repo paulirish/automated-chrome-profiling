@@ -8,6 +8,7 @@ We can use the [Chrome debugging protocol](https://developer.chrome.com/devtools
 ```sh
 git clone https://github.com/paulirish/automated-chrome-profiling
 cd automated-chrome-profiling
+npm install # get the dependencies
 npm start  # serves the folder at http://localhost:8080/ (port hardcoded)
 ```
 
