@@ -4,7 +4,9 @@
   "description": "A few scripts to get started",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "httpster -p 8080"
+    "start": "httpster -p 8080",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "author": "",
   "license": "Apache-2.0",
@@ -12,6 +14,8 @@
   "dependencies": {
     "devtools-timeline-model": "^1.0",
     "chrome-remote-interface": "^0.11.0",
-    "httpster": "^1.0.3"
-  }
+    "httpster": "^1.0.3",
+    "snyk": "^1.25.2"
+  },
+  "snyk": true
 }
