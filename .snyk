@@ -1,0 +1,8 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.7.0
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:qs:20140806-1':
+    - httpster > express > connect > qs:
+        patched: '2017-03-10T04:47:37.494Z'
