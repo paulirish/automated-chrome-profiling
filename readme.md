@@ -83,7 +83,7 @@ Well, it started because testing the performance of asynchronous code is difficu
 
 #### Way more is possible
 
-This is just the tip of the iceberg when it comes to using [the devtools protocol](https://developer.chrome.com/devtools/docs/debugger-protocol) to manipulate and measure the browser. Plenty of other projects around this space as well: see the [devtools protocol section on `awesome-chrome-devtools`](https://github.com/ChromeDevTools/awesome-chrome-devtools#chrome-devtools-protocol) for more.
+This is just the tip of the iceberg when it comes to using [the devtools protocol](https://chromedevtools.github.io/devtools-protocol/) to manipulate and measure the browser. Plenty of other projects around this space as well: see the [devtools protocol section on `awesome-chrome-devtools`](https://github.com/ChromeDevTools/awesome-chrome-devtools#chrome-devtools-protocol) for more.
 
 
 ### Contributors
