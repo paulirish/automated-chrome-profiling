@@ -1,38 +1,43 @@
-var fs = require('fs');
-var Chrome = require('chrome-remote-interface');
+const fs = require('fs');
+const cdp = require('chrome-remote-interface');
+const chromelauncher = require('chrome-launcher');
 
-Chrome(function (chrome) {
-    with (chrome) {
-        Page.enable();
-        Page.loadEventFired(function () {
-            // on load we'll start profiling, kick off the test, and finish
-            // alternatively, Profiler.start(), Profiler.stop() are accessible via chrome-remote-interface
-            Runtime.evaluate({ "expression": "console.profile(); startTest(); console.profileEnd();" });
-        });
+const sleep = n => new Promise(resolve => setTimeout(resolve, n));
 
-        Profiler.enable();
-        
-        // 100 microsecond JS profiler sampling resolution, (1000 is default)
-        Profiler.setSamplingInterval({ 'interval': 100 }, function () {
-            Page.navigate({'url': 'http://localhost:8080/demo/perf-test.html'});
-        });
+const url = 'http://localhost:8080/demo/perf-test.html';
 
-        Profiler.consoleProfileFinished(function (params) {
-            // CPUProfile object (params.profile) described here:
-            //    https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/devtools/protocol.json&q=protocol.json%20%22CPUProfile%22,&sq=package:chromium
+(async function() {
+  const chrome = await chromelauncher.launch({port: 9222});
+  const client = await cdp();
 
-            // Either:
-            // 1. process the data however you wish… or,
-            // 2. Use the JSON file, open Chrome DevTools, Profiles tab,
-            //    select CPU Profile radio button, click `load` and view the
-            //    profile data in the full devtools UI.
-            var file = 'profile-' + Date.now() + '.cpuprofile';
-            var data = JSON.stringify(params.profile, null, 2);
-            fs.writeFileSync(file, data);
-            console.log('Done! See ' + file);
-            close();
-        });
-    }
-}).on('error', function () {
-    console.error('Cannot connect to Chrome');
-});
+  const {Profiler, Page, Runtime} = client;
+  // enable domains to get events.
+  await Page.enable();
+  await Profiler.enable();
+
+  // Set JS profiler sampling resolution to 100 microsecond (default is 1000)
+  await Profiler.setSamplingInterval({interval: 100});
+
+  await Page.navigate({url});
+  await client.on('Page.loadEventFired', async _ => {
+    // on load we'll start profiling, kick off the test, and finish
+    await Profiler.start();
+    await Runtime.evaluate({expression: 'startTest();'});
+    await sleep(600);
+    const data = await Profiler.stop();
+    saveProfile(data);
+  });
+
+  async function saveProfile(data) {
+    // data.profile described here: https://chromedevtools.github.io/devtools-protocol/tot/Profiler/#type-Profile
+    // Process the data however you wish… or,
+    // Use the JSON file, open Chrome DevTools, Menu, More Tools, JavaScript Profiler, `load`, view in the UI
+    const filename = `profile-${Date.now()}.cpuprofile`;
+    const string = JSON.stringify(data.profile, null, 2);
+    fs.writeFileSync(filename, string);
+    console.log('Done! Profile data saved to:', filename);
+
+    await client.close();
+    await chrome.kill();
+  }
+})();
