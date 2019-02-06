@@ -16,10 +16,10 @@ npm start  # serves the folder at http://localhost:8080/ (port hardcoded)
 
 ```sh
 # linux
-google-chrome --remote-debugging-port=9222 --user-data-dir=$TMPDIR/chrome-profiling --no-default-browser-check
+google-chrome --remote-debugging-port=9222 --user-data-dir=$TMPDIR/chrome-profiling --no-first-run
 
 # mac
-/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir=$TMPDIR/chrome-profiling --no-default-browser-check
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222 --user-data-dir=$TMPDIR/chrome-profiling --no-first-run
 ```
 Navigate off the start page to example.com or something.
 
