@@ -57,7 +57,7 @@ See `test-for-layout-trashing.js`
 
 ### Timeline model
 
-The raw trace data is.. pretty raw.  The [`devtools-timeline-model` package](https://github.com/paulirish/devtools-timeline-model)  provides an ability to use the Chrome DevTools frontend's trace parsing.
+The raw trace data is.. pretty raw.  The [`devtools-timeline-model` package](https://github.com/paulirish/devtools-timeline-model) provides an ability to use the Chrome DevTools frontend's trace parsing. (This package has been superseded by [`tracium`](https://github.com/aslushnikov/tracium), but has a much better README.)
 
 ```js
 const filename = 'demo/mdn-fling.json'
